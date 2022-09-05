@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tegne en streg</title>
+</head>
+<body>
+<canvas width="600" height="300"></canvas>
+<script>
+  let cx = document.querySelector("canvas").getContext("2d");
+  function sov(ms) {
+    return new Promise(func => setTimeout(func, ms));
+  }
+
+  red = 0;
+  green = 0;
+  blue = 0;
+
+  function setColors() {
+    let ran = Math.random();
+    red = Math.round(ran*255);
+    ran = Math.random();
+    green = Math.round(ran*255);
+    ran = Math.random();
+    blue = Math.round(ran*255);
+    //console.log("color =" + `rgb(${red},${green},${blue}`);
+  }
+
+  function branch(length, angle, scale) {
+    setColors();
+    cx.fillStyle = `rgb(${red},${green},${blue}`;
+    cx.fillRect(0, 0, 2, length);
+    if (length<8) return;
+    cx.save();
+    cx.translate(0, length);
+    cx.rotate(-angle);
+    branch(length*scale, angle, scale);
+    cx.rotate(2 * angle);
+    branch(length*scale, angle, scale);
+    cx.restore();
+  }
+  cx.translate(300, 0);
+  //cx.fillStyle = "rgb(227,210,51)";
+  cx.fillStyle = `rgb(${red},${green},${blue}`;
+  //branch(60, 0.5, 0.8);
+
+  console.log("nr1");
+
+  const doSomethingAsync = async () => {
+    console.log("111111 før sov");
+    await sov(1000);
+    branch(60, 0.5, 0.8);
+    console.log("22222 færdig sov");
+  }
+
+  const doSomethingAsyncThen = async () => {
+    console.log("111111 før sov");
+    await sov(5000).then(branch(60, 0.5, 0.8));
+    console.log("22222 færdig sov");
+  }
+
+  doSomethingAsyncThen();
+  doSomethingAsyncThen();
+  doSomethingAsyncThen();
+  doSomethingAsyncThen();
+
+  sov(5000).then(console.log("hej1"));
+  sov(5000).then(console.log("hej2"));
+  sov(5000).then(console.log("hej3"));
+
+  //virker stadig ikke
+</script>
+
+</body>
+</html>

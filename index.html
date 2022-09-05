@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tegne en streg</title>
+</head>
+<body>
+<a href="indexrandomsovvirk.html">Til virksomhed</a>
+
+<canvas width="600" height="300"></canvas>
+<script>
+  let cx = document.querySelector("canvas").getContext("2d");
+  let ran = Math.random();
+  let red = Math.round(ran*255);
+  ran = Math.random();
+  let green = Math.round(ran*255);
+  ran = Math.random();
+  let blue = Math.round(ran*255);
+  function branch(length, angle, scale) {
+    cx.fillRect(0, 0, 2, length);
+    if (length<8) return;
+    cx.save();
+    cx.translate(0, length);
+    cx.rotate(-angle);
+    branch(length*scale, angle, scale);
+    cx.rotate(2 * angle);
+    branch(length*scale, angle, scale);
+    cx.restore();
+  }
+  cx.translate(300, 0);
+  //cx.fillStyle = "rgb(227,210,51)";
+  cx.fillStyle = `rgb(${red},${green},${blue}`;
+  branch(60, 0.5, 0.8);
+</script>
+
+</body>
+</html>
